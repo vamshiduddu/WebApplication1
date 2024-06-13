@@ -28,23 +28,29 @@ namespace codeFirstApproach.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
         {
+            await Task.Delay(5000);
             return await employeeRepo.GetEmployees();
         }
 
         // GET: api/Employees/5
         [HttpGet("{id}")]
-        public ActionResult<Employee> GetEmployee(int id)
+        public async Task<ActionResult<Employee>> GetEmployee(int id)
         {
+            // Simulate a delay of 5 seconds
+            await Task.Delay(150000);
+
             try
             {
+                // Your existing code to fetch the employee
                 return Ok(employeeRepo.GetEmployeeByID(id));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                throw ex;
+                // Properly handle exceptions
+                return StatusCode(500, $"An error occurred: {ex.Message}");
             }
-
         }
+
 
         // PUT: api/Employees/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
