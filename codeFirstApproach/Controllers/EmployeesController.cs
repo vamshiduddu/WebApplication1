@@ -29,8 +29,8 @@ namespace codeFirstApproach.Controllers
 
         // GET: api/Employees
         [HttpGet]
-        [Authorize(Roles = "Admin")]
-        // [UsernameAuthorizeAttributeFilter("Vamshi")]
+        //[Authorize(Roles = "Admin")]
+         [UsernameAuthorizeAttributeFilter("HR")]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
         {
             return await employeeRepo.GetEmployees();
