@@ -26,8 +26,7 @@ namespace codeFirstApproach.middleware
             var currentTime = DateTime.UtcNow;
 
             // Update the request count and timestamp
-            ClientRequestCounts.AddOrUpdate(clientIp,
-                (1, currentTime),
+            ClientRequestCounts.AddOrUpdate(clientIp,(1, currentTime),
                 (key, value) =>
                 {
                     if (currentTime - value.Timestamp > TimeWindow)

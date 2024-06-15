@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using codeFirstApproach.Data;
 using codeFirstApproach.model;
 using codeFirstApproach.IRepository;
+using codeFirstApproach.helpers;
+using NuGet.Protocol;
+using Microsoft.AspNetCore.Authorization;
 
 namespace codeFirstApproach.Controllers
 {
@@ -18,7 +21,7 @@ namespace codeFirstApproach.Controllers
         //private readonly ApplicationDbContext _context;
 
         private  IEmployeeRepo employeeRepo;
-
+        private readonly IConfiguration _config;
         public EmployeesController(IEmployeeRepo _employeeRepo)
         {
             employeeRepo = _employeeRepo;
@@ -26,9 +29,10 @@ namespace codeFirstApproach.Controllers
 
         // GET: api/Employees
         [HttpGet]
+        [Authorize(Roles = "Admin")]
+        // [UsernameAuthorizeAttributeFilter("Vamshi")]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
         {
-            await Task.Delay(5000);
             return await employeeRepo.GetEmployees();
         }
 
@@ -97,6 +101,16 @@ namespace codeFirstApproach.Controllers
             }
         }
 
-        
+        [HttpGet("/token")]
+        public IActionResult GetToken(int id,string name,string role)
+        {
+            // Assuming the user has been authenticated
+            var authHelpers = new AuthHelpers();
+            var token = authHelpers.GenerateJWTToken(id,name,role);
+
+            return Ok(new { token });
+        }
+
+
     }
 }
